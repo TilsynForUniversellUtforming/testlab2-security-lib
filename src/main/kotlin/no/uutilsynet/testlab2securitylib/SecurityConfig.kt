@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Configuration
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 import org.springframework.security.config.annotation.web.invoke
+import org.springframework.security.config.http.SessionCreationPolicy
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.authority.mapping.GrantedAuthoritiesMapper
 import org.springframework.security.oauth2.core.oidc.user.OidcUserAuthority
@@ -18,10 +19,10 @@ class SecurityConfig {
 
   @Bean
   open fun filterChain(http: HttpSecurity): SecurityFilterChain {
-
     http {
-      authorizeHttpRequests { authorize(anyRequest, hasAuthority("brukar subscriber")) }
-      oauth2Login { userInfoEndpoint { userAuthoritiesMapper = userAuthoritiesMapper() } }
+      authorizeHttpRequests { authorize(anyRequest, permitAll) }
+      csrf { disable() }
+        sessionManagement { SessionCreationPolicy.STATELESS }
     }
 
     return http.build()

@@ -22,7 +22,7 @@ class SecurityConfig {
     http {
       authorizeHttpRequests { authorize(anyRequest, permitAll) }
       csrf { disable() }
-        sessionManagement { SessionCreationPolicy.STATELESS }
+      sessionManagement { SessionCreationPolicy.STATELESS }
     }
 
     return http.build()

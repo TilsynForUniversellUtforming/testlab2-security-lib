@@ -14,13 +14,14 @@ import org.springframework.security.web.SecurityFilterChain
 
 @Configuration
 @EnableWebSecurity
-class SecurityConfig {
+open class SecurityConfig {
   val rolesExtractor = RoleExtractor()
 
   @Bean
   open fun filterChain(http: HttpSecurity): SecurityFilterChain {
     http {
-      authorizeHttpRequests { authorize(anyRequest, permitAll) }
+      authorizeHttpRequests { authorize(anyRequest, hasAuthority("brukar subscriber")) }
+      oauth2Login { userInfoEndpoint { userAuthoritiesMapper = userAuthoritiesMapper() } }
       csrf { disable() }
       sessionManagement { SessionCreationPolicy.STATELESS }
     }

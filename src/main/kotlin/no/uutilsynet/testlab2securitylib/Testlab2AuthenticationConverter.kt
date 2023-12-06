@@ -11,7 +11,8 @@ class Testlab2AuthenticationConverter : Converter<Jwt, AbstractAuthenticationTok
     var realm_access = jwt.getClaim<Map<String, List<String>>>("realm_access")
     var roles: List<String> = realm_access.getOrDefault("roles", emptyList())
     var authorities = roles.map(::SimpleGrantedAuthority).toHashSet()
+    var name = jwt.getClaim<String>("preferred_username")
 
-    return JwtAuthenticationToken(jwt, authorities)
+    return JwtAuthenticationToken(jwt, authorities, name)
   }
 }

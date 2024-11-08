@@ -1,8 +1,9 @@
-package no.uutilsynet.testlab2frontendserver.common
+package no.uutilsynet.testlab2securitylib.interceptor
 
 import java.io.IOException
 import java.time.Clock
 import org.slf4j.LoggerFactory
+import org.springframework.context.annotation.Profile
 import org.springframework.http.HttpRequest
 import org.springframework.http.HttpStatus
 import org.springframework.http.client.ClientHttpRequestExecution
@@ -19,6 +20,7 @@ import org.springframework.security.oauth2.core.AbstractOAuth2Token
 import org.springframework.stereotype.Component
 
 @Component
+@Profile("oidcclient")
 class BearerTokenInterceptor(
     val clientService: OAuth2AuthorizedClientService,
     val clientManager: OAuth2AuthorizedClientManager
@@ -51,7 +53,7 @@ class BearerTokenInterceptor(
             execution.execute(request, bytes)
           }
     } else {
-      execution.execute(request, bytes)
+      return execution.execute(request, bytes)
     }
   }
 

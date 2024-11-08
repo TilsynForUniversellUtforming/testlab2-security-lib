@@ -1,4 +1,4 @@
-package no.uutilsynet.testlab2frontendserver.common
+package no.uutilsynet.testlab2securitylib.interceptor
 
 import org.springframework.security.oauth2.client.OAuth2AuthorizeRequest
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient

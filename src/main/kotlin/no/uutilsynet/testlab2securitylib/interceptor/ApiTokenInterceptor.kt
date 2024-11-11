@@ -21,5 +21,4 @@ class ApiTokenInterceptor(val apiKeyAuthenticationProperties: ApiKeyAuthenticati
         apiKeyAuthenticationProperties.token
     return execution.execute(request, body)
   }
-
 }

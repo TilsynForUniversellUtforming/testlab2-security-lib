@@ -6,7 +6,7 @@ import org.springframework.security.oauth2.core.oidc.OidcIdToken
 import org.springframework.security.oauth2.core.oidc.OidcUserInfo
 import org.springframework.security.oauth2.core.oidc.user.OidcUserAuthority
 
-class SecurityConfigTest {
+class SecurityLibConfigTest {
 
   @Test
   fun extractUserInfoClaims() {

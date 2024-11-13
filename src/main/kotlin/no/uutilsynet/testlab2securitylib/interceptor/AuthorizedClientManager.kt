@@ -1,5 +1,6 @@
 package no.uutilsynet.testlab2securitylib.interceptor
 
+import org.springframework.context.annotation.Profile
 import org.springframework.security.oauth2.client.OAuth2AuthorizeRequest
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientManager
@@ -10,6 +11,7 @@ import org.springframework.security.oauth2.client.web.OAuth2AuthorizedClientRepo
 import org.springframework.stereotype.Component
 
 @Component("OAuth2AuthorizedClientManager")
+@Profile("oidcclient")
 class AuthorizedClientManager(
     clientRegistrationRepository: ClientRegistrationRepository,
     authorizedClientRepository: OAuth2AuthorizedClientRepository

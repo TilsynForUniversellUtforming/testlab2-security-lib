@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>no.uutilsynet</groupId>
     <artifactId>testlab2-security-lib</artifactId>
-    <version>0.0.7-SNAPSHOT</version>
+    <version>0.0.8-SNAPSHOT</version>
     <name>testlab2-security-lib</name>
     <description>testlab2-security-lib</description>
     <properties>

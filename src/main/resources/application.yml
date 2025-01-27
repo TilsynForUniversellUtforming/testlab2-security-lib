@@ -1,0 +1,18 @@
+spring:
+    config:
+        import: optional:classpath:./dev.properties
+    security:
+        oauth2:
+            client:
+                provider:
+                    brukar:
+                        issuer-uri:
+                registration:
+                    brukar:
+                        client-id: ''
+                        client-name: ''
+                        client-secret: ''
+                        scope: openid,profile
+            resourceserver:
+                jwt:
+                    issuer-uri: https://user.difi.no/auth/realms/difi

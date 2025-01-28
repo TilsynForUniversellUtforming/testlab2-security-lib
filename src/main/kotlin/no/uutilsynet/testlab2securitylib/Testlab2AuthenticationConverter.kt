@@ -8,10 +8,10 @@ import org.springframework.security.oauth2.server.resource.authentication.JwtAut
 
 class Testlab2AuthenticationConverter : Converter<Jwt, AbstractAuthenticationToken> {
   override fun convert(jwt: Jwt): AbstractAuthenticationToken {
-    var realm_access = jwt.getClaim<Map<String, List<String>>>("realm_access")
-    var roles: List<String> = realm_access.getOrDefault("roles", emptyList())
-    var authorities = roles.map(::SimpleGrantedAuthority).toHashSet()
-    var name = jwt.getClaim<String>("preferred_username")
+    val realmAccess = jwt.getClaim<Map<String, List<String>>>("realm_access")
+    val roles: List<String> = realmAccess.getOrDefault("roles", emptyList())
+    val authorities = roles.map(::SimpleGrantedAuthority).toHashSet()
+    val name = jwt.getClaim<String>("preferred_username")
 
     return JwtAuthenticationToken(jwt, authorities, name)
   }

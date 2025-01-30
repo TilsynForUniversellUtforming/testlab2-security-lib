@@ -7,10 +7,14 @@
     <version>0.0.9</version>
     <name>testlab2-security-lib</name>
     <description>testlab2-security-lib</description>
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>3.4.1</version>
+        <relativePath/> <!-- lookup parent from repository -->
+    </parent>
     <properties>
         <java.version>21</java.version>
-        <kotlin.version>1.9.22</kotlin.version>
-        <spring.boot.version>3.4.1</spring.boot.version>
     </properties>
     <dependencies>
         <dependency>

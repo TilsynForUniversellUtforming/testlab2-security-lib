@@ -16,14 +16,14 @@ class Testlab2AuthenticationConverter : Converter<Jwt, AbstractAuthenticationTok
     return JwtAuthenticationToken(jwt, authorities, name)
   }
 
-  private fun getUserName(jwt: Jwt): String? =
-    jwt.getClaim<String>("preferred_username")
+  private fun getUserName(jwt: Jwt): String? = jwt.getClaim<String>("preferred_username")
 
-  private fun rolesToSimpleGrantedAuthorities(roles: List<String>):HashSet<SimpleGrantedAuthority> =
-    roles.map(::SimpleGrantedAuthority).toHashSet()
+  private fun rolesToSimpleGrantedAuthorities(
+      roles: List<String>
+  ): HashSet<SimpleGrantedAuthority> = roles.map(::SimpleGrantedAuthority).toHashSet()
 
   private fun getRealmAccess(jwt: Jwt): Map<String, List<String>>? =
-    jwt.getClaim<Map<String, List<String>>>("realm_access")
+      jwt.getClaim<Map<String, List<String>>>("realm_access")
 
   private fun getRoles(realmAccess: Map<String, List<String>>?): List<String> {
     if (realmAccess == null) {
@@ -33,5 +33,5 @@ class Testlab2AuthenticationConverter : Converter<Jwt, AbstractAuthenticationTok
   }
 
   private fun getRolesFromRealAccess(realmAccess: Map<String, List<String>>) =
-    realmAccess.getOrDefault("roles", emptyList())
+      realmAccess.getOrDefault("roles", emptyList())
 }

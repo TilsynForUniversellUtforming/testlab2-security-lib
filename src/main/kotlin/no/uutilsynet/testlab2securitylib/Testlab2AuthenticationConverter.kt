@@ -26,10 +26,10 @@ class Testlab2AuthenticationConverter : Converter<Jwt, AbstractAuthenticationTok
       jwt.getClaim<Map<String, List<String>>>("realm_access")
 
   private fun getRoles(realmAccess: Map<String, List<String>>?): List<String> {
-    if (realmAccess == null) {
-      return emptyList()
+    if (realmAccess != null) {
+      return getRolesFromRealAccess(realmAccess)
     }
-    return getRolesFromRealAccess(realmAccess)
+    return emptyList()
   }
 
   private fun getRolesFromRealAccess(realmAccess: Map<String, List<String>>) =

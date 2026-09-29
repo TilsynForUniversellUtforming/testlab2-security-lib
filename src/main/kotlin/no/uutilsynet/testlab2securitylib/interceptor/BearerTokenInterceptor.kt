@@ -34,9 +34,9 @@ class BearerTokenInterceptor(
       bytes: ByteArray,
       execution: ClientHttpRequestExecution
   ): ClientHttpResponse {
-    val authentication: Authentication = SecurityContextHolder.getContext().authentication
+    val authentication: Authentication? = SecurityContextHolder.getContext().authentication
 
-    return if (authentication is OAuth2AuthenticationToken) {
+    return if (authentication != null && authentication is OAuth2AuthenticationToken) {
       kotlin
           .runCatching {
             val clientRegistrationId = authentication.authorizedClientRegistrationId
@@ -61,8 +61,9 @@ class BearerTokenInterceptor(
       clientRegistrationId: String?,
       authentication: OAuth2AuthenticationToken
   ): OAuth2AuthorizedClient? =
-      clientService.loadAuthorizedClient<OAuth2AuthorizedClient>(
-          clientRegistrationId, authentication.name)
+      clientRegistrationId?.let {
+        clientService.loadAuthorizedClient<OAuth2AuthorizedClient>(it, authentication.name)
+      }
 
   private fun handleNullClient(
       client: OAuth2AuthorizedClient?,
@@ -110,7 +111,7 @@ class BearerTokenInterceptor(
       if (reauthorizedClient != null) {
         clientService.saveAuthorizedClient(reauthorizedClient, oauthToken)
       }
-      reauthorizedClient ?: throw RuntimeException("Re-authorization failed")
+      reauthorizedClient ?: error("Re-authorization failed")
     }
   }
 

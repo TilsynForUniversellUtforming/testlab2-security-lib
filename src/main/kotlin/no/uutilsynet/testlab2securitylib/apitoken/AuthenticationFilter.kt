@@ -2,40 +2,45 @@ package no.uutilsynet.testlab2securitylib.apitoken
 
 import jakarta.servlet.FilterChain
 import jakarta.servlet.ServletException
-import jakarta.servlet.ServletRequest
-import jakarta.servlet.ServletResponse
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
 import java.io.IOException
 import org.springframework.http.MediaType
 import org.springframework.security.core.Authentication
+import org.springframework.security.core.AuthenticationException
 import org.springframework.security.core.context.SecurityContextHolder
-import org.springframework.web.filter.GenericFilterBean
+import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter
+import org.springframework.security.web.util.matcher.RequestHeaderRequestMatcher
 
 class AuthenticationFilter(val tokenAuthenticationService: TokenAuthenticationService) :
-    GenericFilterBean() {
+    AbstractAuthenticationProcessingFilter(
+        RequestHeaderRequestMatcher(tokenAuthenticationService.properties.headerName)) {
+
+  override fun attemptAuthentication(
+      request: HttpServletRequest,
+      response: HttpServletResponse
+  ): Authentication {
+    return tokenAuthenticationService.getAuthentication(request)
+  }
 
   @Throws(IOException::class, ServletException::class)
-  override fun doFilter(
-      request: ServletRequest,
-      response: ServletResponse,
-      filterChain: FilterChain
+  override fun successfulAuthentication(
+      request: HttpServletRequest,
+      response: HttpServletResponse,
+      chain: FilterChain,
+      authResult: Authentication
   ) {
-    if ((request as HttpServletRequest).getHeader("X-API-KEY") != null) {
-      try {
-        val authentication: Authentication = tokenAuthenticationService.getAuthentication(request)
-        SecurityContextHolder.getContext().authentication = authentication
-      } catch (exp: Exception) {
-        val httpResponse = response as HttpServletResponse
-        httpResponse.status = HttpServletResponse.SC_UNAUTHORIZED
-        httpResponse.contentType = MediaType.APPLICATION_JSON_VALUE
-        val writer = httpResponse.writer
-        writer.print(exp.message)
-        writer.flush()
-        writer.close()
-      }
-    }
+    SecurityContextHolder.getContext().authentication = authResult
+    chain.doFilter(request, response)
+  }
 
-    filterChain.doFilter(request, response)
+  override fun unsuccessfulAuthentication(
+      request: HttpServletRequest,
+      response: HttpServletResponse,
+      failed: AuthenticationException
+  ) {
+    response.status = HttpServletResponse.SC_UNAUTHORIZED
+    response.contentType = MediaType.APPLICATION_JSON_VALUE
+    response.writer.use { writer -> writer.print(failed.message) }
   }
 }
